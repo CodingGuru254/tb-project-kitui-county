@@ -1,0 +1,51 @@
+import pandas as pd
+import random
+
+# Define basic parameters
+subcounties = ['Kitui Central', 'Kitui East', 'Kitui West', 'Mwingi Central', 'Mwingi East', 'Kitui South', 'Mutomo']
+lineages = ['L1', 'L2', 'L3', 'L4']
+mutations = ['katG_S315T', 'inhA_C15T', 'rpoB_S531L', 'embB_M306V', 'pncA_Q10P']
+
+# Simulate TB strain data
+strain_data = []
+num_strains = 20
+
+for i in range(num_strains):
+    strain_id = f"strain_{i+1}"
+    subcounty = random.choice(subcounties)
+    lineage = random.choice(lineages)
+    resistance = random.choices([1, 0], weights=[0.4, 0.6])[0]  # 40% chance resistant
+    mutation_profile = random.sample(mutations, random.randint(1, 3)) if resistance else []
+
+    strain_data.append({
+        'strain_id': strain_id,
+        'subcounty': subcounty,
+        'lineage': lineage,
+        'drug_resistance': resistance,
+        'mutation_profile': mutation_profile
+    })
+
+df = pd.DataFrame(strain_data)
+
+# ---------- Analysis Section ----------
+
+# 1. Strain Typing: Count by Lineage
+lineage_counts = df['lineage'].value_counts()
+print("🧬 Strain Typing (Lineage Distribution):\n")
+print(lineage_counts, '\n')
+
+# 2. Resistance Summary
+resistant_strains = df[df['drug_resistance'] == 1]
+non_resistant_strains = df[df['drug_resistance'] == 0]
+print("💊 Resistant strains count:", resistant_strains.shape[0])
+print("🧪 Non-resistant strains count:", non_resistant_strains.shape[0], '\n')
+
+# 3. Resistance Mutation Frequency
+all_mutations = [m for muts in df['mutation_profile'] for m in muts]
+mutation_counts = pd.Series(all_mutations).value_counts()
+print("🔬 Resistance Mutation Frequency:\n")
+print(mutation_counts)
+
+# 4. Optional: Display full table
+print("\n📋 Sample Strain Data:\n")
+print(df[['strain_id', 'subcounty', 'lineage', 'drug_resistance', 'mutation_profile']])
