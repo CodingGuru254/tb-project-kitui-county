@@ -1,0 +1,61 @@
+import pandas as pd
+import numpy as np
+import random
+from statsmodels.formula.api import glm
+import statsmodels.api as sm
+
+# ------------------ Simulated Spatial TB Data ------------------
+spatial_data = pd.DataFrame({
+    'subcounty': [
+        'Kitui Central', 'Kitui East', 'Kitui West',
+        'Mwingi Central', 'Mwingi East', 'Kitui South', 'Mutomo'
+    ],
+    'tb_cases': [50, 40, 45, 30, 35, 25, 20],
+    'population': [100000, 90000, 95000, 85000, 80000, 75000, 70000],
+    'hiv_prevalence': [0.25, 0.27, 0.26, 0.23, 0.24, 0.22, 0.20],
+    'poverty_rate': [0.42, 0.45, 0.40, 0.43, 0.41, 0.44, 0.39],
+    'spatial_lag_tb': [36.7, 41.7, 36.2, 37.5, 33.3, 35.0, 35.0]
+})
+spatial_data['log_pop'] = np.log(spatial_data['population'])
+
+# ------------------ Simulated Molecular Data ------------------
+lineages = ['L1', 'L2', 'L3', 'L4']
+mutations = ['katG_S315T', 'inhA_C15T', 'rpoB_S531L', 'embB_M306V', 'pncA_Q10P']
+
+molecular_strains = []
+for i in range(50):
+    strain_id = f"strain_{i+1}"
+    subcounty = random.choice(spatial_data['subcounty'])
+    lineage = random.choice(lineages)
+    resistance = random.choices([1, 0], weights=[0.4, 0.6])[0]
+    mutation_profile = random.sample(mutations, random.randint(1, 3)) if resistance else []
+    molecular_strains.append({
+        'strain_id': strain_id,
+        'subcounty': subcounty,
+        'lineage': lineage,
+        'drug_resistance': resistance,
+        'mutation_profile': mutation_profile
+    })
+molecular_df = pd.DataFrame(molecular_strains)
+
+# ------------------ Aggregate Molecular Info ------------------
+resistance_summary = molecular_df.groupby('subcounty')['drug_resistance'].sum().reset_index()
+resistance_summary.columns = ['subcounty', 'resistant_strain_count']
+
+# ------------------ Merge Spatial + Molecular ------------------
+combined_df = pd.merge(spatial_data, resistance_summary, on='subcounty', how='left')
+combined_df['resistant_strain_count'] = combined_df['resistant_strain_count'].fillna(0)
+
+# ------------------ Fit Poisson Model ------------------
+formula = 'tb_cases ~ hiv_prevalence + poverty_rate + spatial_lag_tb + resistant_strain_count'
+model = glm(formula=formula,
+            data=combined_df,
+            family=sm.families.Poisson(),
+            offset=combined_df['log_pop']).fit()
+
+# ------------------ Results ------------------
+print("✅ INTEGRATED SPATIAL + MOLECULAR POISSON MODEL\n")
+print(model.summary())
+
+print("\n📋 Combined Data Preview:")
+print(combined_df[['subcounty', 'tb_cases', 'resistant_strain_count', 'hiv_prevalence', 'spatial_lag_tb']])
