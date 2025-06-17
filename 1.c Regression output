@@ -1,0 +1,38 @@
+
+
+subcounty  tb_cases  population  hiv_prevalence  poverty_rate  \
+0   Kitui Central        50      100000            0.25          0.42   
+1      Kitui East        40       90000            0.27          0.45   
+2      Kitui West        45       95000            0.26          0.40   
+3  Mwingi Central        30       85000            0.23          0.43   
+4     Mwingi East        35       80000            0.24          0.41   
+5     Kitui South        25       75000            0.22          0.44   
+6          Mutomo        20       70000            0.20          0.39   
+
+   spatial_lag_tb    log_pop  
+0       36.666667  11.512925  
+1       41.666667  11.407565  
+2       36.250000  11.461632  
+3       37.500000  11.350407  
+4       33.333333  11.289782  
+5       35.000000  11.225243  
+6       35.000000  11.156251  
+                 Generalized Linear Model Regression Results                  
+==============================================================================
+Dep. Variable:               tb_cases   No. Observations:                    7
+Model:                            GLM   Df Residuals:                        3
+Model Family:                 Poisson   Df Model:                            3
+Link Function:                    Log   Scale:                          1.0000
+Method:                          IRLS   Log-Likelihood:                -19.190
+Date:                Tue, 17 Jun 2025   Deviance:                      0.89886
+Time:                        11:00:41   Pearson chi2:                    0.924
+No. Iterations:                     4   Pseudo R-squ. (CS):             0.6345
+Covariance Type:            nonrobust                                         
+==================================================================================
+                     coef    std err          z      P>|z|      [0.025      0.975]
+----------------------------------------------------------------------------------
+Intercept         -8.9429      1.476     -6.058      0.000     -11.836      -6.050
+hiv_prevalence     9.8998      4.013      2.467      0.014       2.034      17.766
+poverty_rate      -0.1119      4.605     -0.024      0.981      -9.137       8.913
+spatial_lag_tb    -0.0329      0.042     -0.785      0.432      -0.115       0.049
+==================================================================================
