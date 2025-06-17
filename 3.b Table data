@@ -1,0 +1,35 @@
+  patient_id    subcounty collection_date  strain_id lineage  drug_resistance  \
+0       P001       Mutomo      2024-06-03   strain_1      L4                1   
+1       P002       Mutomo      2024-02-07   strain_2      L2                0   
+2       P003   Kitui East      2024-06-04   strain_3      L2                0   
+3       P004  Kitui South      2024-01-24   strain_4      L3                1   
+4       P005       Mutomo      2024-05-25   strain_5      L4                0   
+5       P006       Mutomo      2024-06-07   strain_6      L1                1   
+6       P007  Kitui South      2024-04-16   strain_7      L4                1   
+7       P008  Kitui South      2024-03-28   strain_8      L3                1   
+8       P009  Kitui South      2024-01-10   strain_9      L1                0   
+9       P010  Kitui South      2024-03-13  strain_10      L2                1   
+
+                      mutation_profile  \
+0  [pncA_Q10P, embB_M306V, rpoB_S531L]   
+1                                   []   
+2                                   []   
+3  [embB_M306V, katG_S315T, pncA_Q10P]   
+4                                   []   
+5   [katG_S315T, pncA_Q10P, inhA_C15T]   
+6  [katG_S315T, embB_M306V, pncA_Q10P]   
+7   [inhA_C15T, embB_M306V, pncA_Q10P]   
+8                                   []   
+9                          [pncA_Q10P]   
+
+                                       sequence_snps  
+0               [1490, 1551, 1718, 1800, 2168, 3857]  
+1                                 [2695, 2856, 3856]  
+2  [1499, 1533, 2038, 2095, 2206, 2746, 3282, 336...  
+3                                 [1615, 1700, 3796]  
+4  [1073, 1544, 1946, 2476, 2623, 2809, 2817, 305...  
+5  [1076, 1264, 1361, 1450, 2098, 2454, 3047, 315...  
+6                           [1064, 2562, 3236, 3561]  
+7                           [1321, 1995, 3520, 3798]  
+8                                 [2199, 3055, 3939]  
+9                                 [1380, 3043, 3762]  
