@@ -1,0 +1,39 @@
+
+import numpy as np
+import pandas as pd
+import statsmodels.formula.api as smf
+subcounties = [
+    'Kitui Central', 'Kitui East', 'Kitui West',
+    'Mwingi Central', 'Mwingi East', 'Kitui South', 'Mutomo'
+]
+tb_cases = np.array([50, 40, 45, 30, 35, 25, 20])
+population = np.array([100000, 90000, 95000, 85000, 80000, 75000, 70000])
+hiv_prevalence = np.array([0.25, 0.27, 0.26, 0.23, 0.24, 0.22, 0.20])
+poverty_rate = np.array([0.42, 0.45, 0.40, 0.43, 0.41, 0.44, 0.39])
+adjacency = np.array([
+    [0,1,1,0,0,1,0],  # Kitui Central neighbors
+    [1,0,1,1,0,0,0],  # Kitui East neighbors
+    [1,1,0,0,1,0,1],  # Kitui West neighbors
+    [0,1,0,0,1,0,0],  # Mwingi Central neighbors
+    [0,0,1,1,0,1,0],  # Mwingi East neighbors
+    [1,0,0,0,1,0,1],  # Kitui South neighbors
+    [0,0,1,0,0,1,0],  # Mutomo neighbors
+])
+weights = adjacency / adjacency.sum(axis=1, keepdims=True)
+spatial_lag_tb = weights.dot(tb_cases)
+df = pd.DataFrame({
+    'subcounty': subcounties,
+    'tb_cases': tb_cases,
+    'population': population,
+    'hiv_prevalence': hiv_prevalence,
+    'poverty_rate': poverty_rate,
+    'spatial_lag_tb': spatial_lag_tb
+})
+df['log_pop'] = np.log(df['population'])
+print(df)
+formula = 'tb_cases ~ hiv_prevalence + poverty_rate + spatial_lag_tb'
+
+model = smf.glm(formula=formula, data=df,
+                family=sm.families.Poisson(),
+                offset=df['log_pop']).fit()
+print(model.summary())
