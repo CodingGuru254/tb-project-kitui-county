@@ -1,0 +1,29 @@
+from graphviz import Digraph
+
+
+dot = Digraph(comment='TB Spatial-Molecular Integration Workflow', format='png')
+
+
+dot.node('A', 'Collect TB Case Data\n(subcounty-level counts, population, HIV, poverty)')
+dot.node('B', 'Calculate Spatial Lag\n(Adjacency matrix & spatial lag of TB cases)')
+dot.node('C', 'Fit Poisson Regression Model\n(TB cases ~ HIV + Poverty + Spatial Lag + Offset)')
+dot.node('D', 'Collect Molecular Evolution Data\n(TB strain sequencing from patient samples)')
+dot.node('E', 'Perform Molecular Analysis\n(Phylogenetics, Strain Typing, Resistance mutations)')
+dot.node('F', 'Integrate Results\n(Combine spatial TB model + molecular clusters)')
+dot.node('G', 'Interpret & Inform TB Control\n(Target hotspots, transmission dynamics, drug resistance)')
+
+dot.edge('A', 'B', label='Prepare spatial data')
+dot.edge('B', 'C', label='Generate predictors')
+dot.edge('C', 'F', label='Model results')
+dot.edge('D', 'E', label='Sequence data processing')
+dot.edge('E', 'F', label='Molecular insights')
+dot.edge('F', 'G', label='Synthesis for action')
+
+dot.render('tb_integration_flowchart', view=True)
+!pip install graphviz
+from graphviz import Digraph
+
+dot.render('tb_integration_flowchart', format='png')
+
+from IPython.display import Image
+Image('tb_integration_flowchart.png')
