@@ -1,0 +1,58 @@
+
+💊 Resistant strains count: 7
+🧪 Non-resistant strains count: 13 
+
+🔬 Resistance Mutation Frequency:
+
+katG_S315T    4
+pncA_Q10P     2
+rpoB_S531L    2
+embB_M306V    2
+inhA_C15T     1
+Name: count, dtype: int64
+
+📋 Sample Strain Data:
+
+    strain_id       subcounty lineage  drug_resistance  \
+0    strain_1          Mutomo      L4                0   
+1    strain_2      Kitui West      L4                0   
+2    strain_3  Mwingi Central      L1                0   
+3    strain_4      Kitui West      L4                0   
+4    strain_5   Kitui Central      L4                0   
+5    strain_6   Kitui Central      L2                1   
+6    strain_7  Mwingi Central      L4                1   
+7    strain_8      Kitui West      L1                1   
+8    strain_9      Kitui East      L2                0   
+9   strain_10      Kitui West      L2                1   
+10  strain_11      Kitui East      L2                1   
+11  strain_12     Mwingi East      L3                0   
+12  strain_13   Kitui Central      L3                0   
+13  strain_14      Kitui East      L2                0   
+14  strain_15      Kitui West      L4                0   
+15  strain_16      Kitui West      L3                1   
+16  strain_17      Kitui East      L3                1   
+17  strain_18          Mutomo      L4                0   
+18  strain_19          Mutomo      L3                0   
+19  strain_20          Mutomo      L2                0   
+
+                        mutation_profile  
+0                                     []  
+1                                     []  
+2                                     []  
+3                                     []  
+4                                     []  
+5                           [katG_S315T]  
+6                            [pncA_Q10P]  
+7   [rpoB_S531L, katG_S315T, embB_M306V]  
+8                                     []  
+9                           [katG_S315T]  
+10    [embB_M306V, pncA_Q10P, inhA_C15T]  
+11                                    []  
+12                                    []  
+13                                    []  
+14                                    []  
+15                          [katG_S315T]  
+16                          [rpoB_S531L]  
+17                                    []  
+18                                    []  
+19                                    []  
