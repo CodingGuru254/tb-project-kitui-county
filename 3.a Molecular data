@@ -7,10 +7,11 @@ subcounties = ['Kitui Central', 'Kitui East', 'Kitui West', 'Mwingi Central', 'M
 lineages = ['L1', 'L2', 'L3', 'L4']
 mutations = ['katG_S315T', 'inhA_C15T', 'rpoB_S531L', 'embB_M306V', 'pncA_Q10P']
 
-# Simulate data
+# Simulate data to 
 num_patients = 20
 data = []
 
+#Using f-string to simulate expressions factoring in the exact day and time the loop was run.
 for i in range(num_patients):
     patient_id = f'P{i+1:03}'
     subcounty = random.choice(subcounties)
@@ -18,10 +19,15 @@ for i in range(num_patients):
     collection_date = datetime(2024, 1, 1) + timedelta(days=random.randint(0, 180))
     lineage = random.choice(lineages)
     
-    # Random resistance (30% resistant)
+# Random resistance (30% resistant)
+#random.choices([0, 1], weights=[0.7, 0.3]) picks either 0 (not resistant) or 1 (resistant).
+#70% chance (0.7) to pick 0 → not resistant
+#30% chance (0.3) to pick 1 → resistant
+
     resistant = random.choices([0, 1], weights=[0.7, 0.3])[0]
     
     # Add mutations only if resistant
+#The result, mutation_profile, is a list of 1 to 3 mutations chosen without repeats.
     if resistant:
         mutation_profile = random.sample(mutations, k=random.randint(1, 3))
     else:
