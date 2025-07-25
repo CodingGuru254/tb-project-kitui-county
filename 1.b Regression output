@@ -1,4 +1,24 @@
-
+The Poisson regression model was used to examine the relationship between TB cases and three key predictors: 
+HIV prevalence, poverty rate, and spatially lagged TB cases, while adjusting for population size using 
+the natural log of population as an offset. The model shows a good fit given the small sample size, 
+with a pseudo R-squared value of 0.6345, indicating that approximately 63% 
+of the variation in TB cases across the subcounties is explained by the predictors.
+The coefficient for HIV prevalence is 9.90 and is statistically significant (p = 0.014).
+When exponentiated, this translates to an incidence rate ratio (IRR) of approximately 19,891, 
+suggesting that a one-unit increase in HIV prevalence 
+(e.g., from 0.25 to 1.25) is associated with nearly 19,891 times higher TB incidence.
+While the magnitude seems extreme due to the scaling, 
+it clearly indicates a strong and significant positive relationship between HIV prevalence and TB cases. 
+In contrast, the coefficient for poverty rate is -0.11, 
+which yields an IRR of about 0.89 (or an 11% decrease in TB rate per unit increase in poverty), 
+but this effect is not statistically significant (p = 0.981). Similarly, 
+the spatial lag of TB cases has a coefficient of -0.033 (IRR ≈ 0.97), 
+indicating a weak and non-significant relationship with local TB incidence (p = 0.432).
+Overall, the model suggests that HIV prevalence is the only statistically 
+significant predictor of TB incidence in this dataset, while poverty and TB cases in neighboring 
+subcounties do not show meaningful effects. 
+These results should be interpreted cautiously due to the very small sample size (7 subcounties), 
+which limits statistical power and may affect the stability of estimates.
 
 subcounty  tb_cases  population  hiv_prevalence  poverty_rate  \
 0   Kitui Central        50      100000            0.25          0.42   
