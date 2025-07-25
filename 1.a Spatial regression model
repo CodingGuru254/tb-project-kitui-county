@@ -62,7 +62,7 @@ df = pd.DataFrame({
 
 #adds a new column to your DataFrame called log_pop, which contains the natural logarithm of the population for each subcounty
 # log of population: Improve interpretability in regression
- Linearize relationships(using log(pop) helps make the relationship more linear, which is useful in regression modeling.
+#Linearize relationships(using log(pop) helps make the relationship more linear, which is useful in regression modeling.
 
 df['log_pop'] = np.log(df['population'])
 # setting up your data and a regression formula to analyze how HIV prevalence, poverty,
