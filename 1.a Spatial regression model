@@ -1,8 +1,14 @@
+#This model seeks to quantify TB incidences factoring in risk factors like poverty rate, effect of neighbors, poverty rates. 
+#This is the starting point of finding the transimission dynamics of the case disease under test 
+#You have to import numerical, table visualization and statistical terms.
 
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
+
+#You have to then define variables to be used in the model including the subcounties, number of tb cases, total population, 
+#hiv prevalance and poverty rates are given in proportion to the population so thats why we use decimal to present those specific variables. 
 subcounties = [
     'Kitui Central', 'Kitui East', 'Kitui West',
     'Mwingi Central', 'Mwingi East', 'Kitui South', 'Mutomo'
@@ -11,6 +17,9 @@ tb_cases = np.array([50, 40, 45, 30, 35, 25, 20])
 population = np.array([100000, 90000, 95000, 85000, 80000, 75000, 70000])
 hiv_prevalence = np.array([0.25, 0.27, 0.26, 0.23, 0.24, 0.22, 0.20])
 poverty_rate = np.array([0.42, 0.45, 0.40, 0.43, 0.41, 0.44, 0.39])
+
+#Kitui Central is neighbors with Kitui East, Kitui West, and Kitui South, 1 means neibghbors, 0 means not neighbors. 
+#It uses linear relationship one of the disavantages of this spatial presentation.
 adjacency = np.array([
     [0,1,1,0,0,1,0],  # Kitui Central neighbors
     [1,0,1,1,0,0,0],  # Kitui East neighbors
@@ -20,8 +29,28 @@ adjacency = np.array([
     [1,0,0,0,1,0,1],  # Kitui South neighbors
     [0,0,1,0,0,1,0],  # Mutomo neighbors
 ])
+
+#weights matrix shows the proportion of “influence” or connection each neighboring region has.
+#it calculates proportion of influence based on neighboring regions for example you are sorrounded by 3 regions 
+#Weighted row: [0, 1/3, 1/3, 0, 0, 1/3, 0] ≈ [0, 0.333, 0.333, 0, 0, 0.333, 0]
+#keepdims=True (Normally, when you sum along an axis, NumPy reduces the dimension of the array.)
+#If you didn’t use keepdims=True, the sum would be a 1D array NumPy would try to broadcast differently, possibly causing errors or wrong results.
+
 weights = adjacency / adjacency.sum(axis=1, keepdims=True)
+
+# It calculates the weighted average number of TB cases in its neighboring regions.
+# spatial_lag_tb: Weighted average TB cases in neighboring subcounties (spatial lag)
+# Am doing a matrix-vector multiplication: {1/3*40, 1/3*45.....}
+
 spatial_lag_tb = weights.dot(tb_cases)
+
+# Creating a table (DataFrame) that contains data for each subcounty, combining:
+#subcounty: Names of the 7 subcounties
+#tb_cases: Number of TB cases in each subcounty
+#population: Population of each subcounty
+#hiv_prevalence: HIV prevalence rate
+#poverty_rate: Poverty rate
+
 df = pd.DataFrame({
     'subcounty': subcounties,
     'tb_cases': tb_cases,
@@ -30,10 +59,23 @@ df = pd.DataFrame({
     'poverty_rate': poverty_rate,
     'spatial_lag_tb': spatial_lag_tb
 })
+
+#adds a new column to your DataFrame called log_pop, which contains the natural logarithm of the population for each subcounty
+# log of population: Improve interpretability in regression
+ Linearize relationships(using log(pop) helps make the relationship more linear, which is useful in regression modeling.
+
 df['log_pop'] = np.log(df['population'])
+# setting up your data and a regression formula to analyze how HIV prevalence, poverty,
+#and neighboring TB cases affect TB case counts.
+
 print(df)
 formula = 'tb_cases ~ hiv_prevalence + poverty_rate + spatial_lag_tb'
 
+# Modeling tb_cases as a Poisson-distributed outcome, which is appropriate for count data like TB case numbers.
+#The family argument tells the model what type of outcome you're modeling and what kind of error distribution to expect.
+#An offset is like a predictor variable whose coefficient is fixed at 1.
+#You use it when you want to adjust your model, especially for exposure or population size,
+#without estimating a coefficient for that variable.
 model = smf.glm(formula=formula, data=df,
                 family=sm.families.Poisson(),
                 offset=df['log_pop']).fit()
