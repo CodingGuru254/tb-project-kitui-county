@@ -1,3 +1,13 @@
+#In my work, I integrate spatial epidemiological modeling with molecular data to gain a deeper 
+#understanding of TB transmission and improve control strategies. Using spatial data like TB case counts, 
+#HIV prevalence, poverty, and population helps me identify geographic hotspots and patterns. 
+#At the same time, molecular analysis of TB strains through sequencing and resistance testing reveals how cases are 
+#genetically related and whether drug resistance is present. 
+#Combining these two sources of information allows me to distinguish between local transmission and 
+#new introductions, detect outbreaks sooner, and design more targeted interventions. 
+#This approach strengthens our ability to focus resources where they are most needed and ultimately supports more effective, 
+#data-driven TB control efforts.
+
 from graphviz import Digraph
 
 
